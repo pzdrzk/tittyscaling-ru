@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <meta name="theme-color" content="#101418">
+  <meta name="description" content="TittyScale RU — студия измерений по изображениям. Линейки, расчёт объёма и массы, оформление и экспорт. Всё в вашем браузере.">
+  <title>TittyScale RU — студия измерений</title>
+  <link rel="icon" href="./assets/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <svg class="icon-defs" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><defs>
+    <symbol id="i-ruler" viewBox="0 0 24 24"><path d="m3 16 13-13 5 5L8 21zM8 11l2 2m2-6 2 2m2-6 2 2M4 15l2 2"/></symbol>
+    <symbol id="i-upload" viewBox="0 0 24 24"><path d="M12 16V3m-5 5 5-5 5 5M4 15v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></symbol>
+    <symbol id="i-download" viewBox="0 0 24 24"><path d="M12 3v13m-5-5 5 5 5-5M4 15v5a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-5"/></symbol>
+    <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 7V5h7l2 3h9l-2 12H3V7h7l2 1"/></symbol>
+    <symbol id="i-save" viewBox="0 0 24 24"><path d="M4 3h14l3 3v15H3V3zm3 0v6h10V3M7 21v-8h10v8"/></symbol>
+    <symbol id="i-cube" viewBox="0 0 24 24"><path d="m12 2 9 5v10l-9 5-9-5V7zm0 20V12m-9-5 9 5 9-5M7 4.8l10 5.5"/></symbol>
+    <symbol id="i-shirt" viewBox="0 0 24 24"><path d="m8 3-6 4 3 5 3-2v11h8V10l3 2 3-5-6-4c-1 4-7 4-8 0z"/></symbol>
+    <symbol id="i-drop" viewBox="0 0 24 24"><path d="M12 2S5 10 5 15a7 7 0 0 0 14 0c0-5-7-13-7-13zM8 15a4 4 0 0 0 4 4"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 3v7m0 4v7M12 3v12m0 4v2M20 3v2m0 4v12M1 10h6v4H1zM9 15h6v4H9zM17 5h6v4h-6z"/></symbol>
+    <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.5"/><path d="m3 17 6-5 4 4 3-3 5 5"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M3 10a9 9 0 1 1 2 8M3 3v7h7"/></symbol>
+    <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 4 2c-1 .5-1.5 1-1.5 3m0 2v1"/></symbol>
+    <symbol id="i-lock" viewBox="0 0 24 24"><rect x="5" y="10" width="14" height="11" rx="3"/><path d="M8 10V7a4 4 0 0 1 8 0v3m-4 4v3"/></symbol>
+    <symbol id="i-link" viewBox="0 0 24 24"><path d="m9 15 6-6m-4-3 2-2a5 5 0 0 1 7 7l-3 3M7 10l-3 3a5 5 0 0 0 7 7l2-2"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4 12h16m-6-6 6 6-6 6"/></symbol>
+    <symbol id="i-fit" viewBox="0 0 24 24"><path d="M3 9V3h6m6 0h6v6m0 6v6h-6m-6 0H3v-6"/></symbol>
+    <symbol id="i-x" viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/></symbol>
+  </defs></svg>
+
+  <header class="app-header">
+    <a class="brand" href="./" aria-label="TittyScale RU — главная"><span class="brand-mark"><svg class="icon"><use href="#i-ruler"/></svg></span><span>TittyScale<span class="ru-badge">RU</span><small>СТУДИЯ ИЗМЕРЕНИЙ</small></span></a>
+    <div class="header-actions">
+      <button class="button quiet icon-mobile" id="open-project" title="Открыть проект"><svg class="icon"><use href="#i-folder"/></svg><span>Открыть</span></button>
+      <button class="button quiet icon-mobile" id="save-project" disabled title="Сохранить проект"><svg class="icon"><use href="#i-save"/></svg><span>Сохранить</span></button>
+      <span class="action-divider"></span>
+      <button class="button primary" id="export-open" disabled><svg class="icon"><use href="#i-download"/></svg>Экспорт<span class="desktop-only"> PNG</span></button>
+    </div>
+  </header>
+
+  <main class="app-main">
+    <section class="workspace" aria-label="Рабочая область">
+      <div class="workspace-heading"><div><div class="eyebrow"><span class="status-dot"></span>ЛОКАЛЬНЫЙ ПРОЕКТ</div><h1 id="project-title">Новый проект</h1></div><button class="button subtle" id="replace-image"><svg class="icon"><use href="#i-upload"/></svg><span>Изображение</span></button></div>
+      <div class="canvas-area" id="drop-zone">
+        <div class="stage-top"><span class="stage-tag"><svg class="icon"><use href="#i-image"/></svg><span id="image-info">Рабочий холст</span></span><div class="stage-actions"><button class="icon-button" id="undo" disabled aria-label="Отменить действие" title="Отменить · Ctrl+Z">↶</button><button class="icon-button" id="redo" disabled aria-label="Повторить действие" title="Повторить · Ctrl+Shift+Z">↷</button><button class="icon-button" id="toggle-rulers" disabled aria-label="Скрыть линейки" title="Показать или скрыть линейки"><svg class="icon"><use href="#i-eye"/></svg></button></div></div>
+        <canvas id="stage" tabindex="0" aria-label="Изображение с линейками. Выберите линейку справа; стрелки перемещают её, Shift ускоряет движение." hidden></canvas>
+        <div class="empty-state" id="empty-state">
+          <div class="empty-art" aria-hidden="true"><div class="orbit orbit-one"></div><div class="orbit orbit-two"></div><div class="art-tile"><svg class="icon"><use href="#i-image"/></svg><span class="art-corner"></span></div><span class="measure-mark mark-one">A</span><span class="measure-mark mark-two">B</span><span class="art-cross">+</span></div>
+          <div class="eyebrow">ОТ ИЗОБРАЖЕНИЯ К ЦИФРАМ</div><h2>У каждого размера<br>есть своя история.</h2><p>Добавьте изображение, задайте масштаб<br>и оставьте расчёты нам.</p>
+          <button class="button primary large" id="upload-main"><svg class="icon"><use href="#i-upload"/></svg>Выбрать изображение<svg class="icon arrow"><use href="#i-arrow"/></svg></button>
+          <div class="empty-secondary"><button class="text-button" id="url-open"><svg class="icon"><use href="#i-link"/></svg>По ссылке</button><span>или</span><button class="text-button" id="demo">Открыть пример</button></div>
+          <span class="drop-hint">Перетащите файл сюда или нажмите <kbd>Ctrl</kbd> + <kbd>V</kbd></span>
+        </div>
+        <div class="drop-overlay" id="drop-overlay" hidden><svg class="icon"><use href="#i-upload"/></svg>Отпустите изображение здесь</div>
+        <div class="zoom-toolbar" id="zoom-toolbar" hidden><button class="icon-button" id="zoom-out" aria-label="Уменьшить масштаб">−</button><output id="zoom-value">100%</output><button class="icon-button" id="zoom-in" aria-label="Увеличить масштаб">+</button><span></span><button class="icon-button" id="fit" aria-label="Вписать изображение" title="Вписать · 0"><svg class="icon"><use href="#i-fit"/></svg></button></div>
+        <div class="stage-bottom"><span id="stage-tip">PNG, JPG, WebP, GIF, AVIF · до 20 МБ</span><span class="canvas-size" id="canvas-size">— × —</span></div>
+      </div>
+      <div class="workspace-foot"><span><svg class="icon"><use href="#i-lock"/></svg>Изображения остаются в вашем браузере</span><button class="text-button" id="help-open"><svg class="icon"><use href="#i-help"/></svg>Как пользоваться</button></div>
+    </section>
+
+    <aside class="inspector" aria-label="Настройки и расчёты">
+      <div class="inspector-top"><span class="eyebrow">ИНСТРУМЕНТЫ</span><span class="version">V 1.0</span></div>
+      <nav class="tabs" aria-label="Разделы" role="tablist">
+        <button class="tab active" id="tab-dimensions" role="tab" aria-selected="true" aria-controls="pane-dimensions" data-tab="dimensions"><svg class="icon"><use href="#i-ruler"/></svg>Размеры</button>
+        <button class="tab" id="tab-volume" role="tab" aria-selected="false" aria-controls="pane-volume" data-tab="volume"><svg class="icon"><use href="#i-cube"/></svg>Объём</button>
+        <button class="tab" id="tab-clothing" role="tab" aria-selected="false" aria-controls="pane-clothing" data-tab="clothing"><svg class="icon"><use href="#i-shirt"/></svg>Одежда</button>
+        <button class="tab" id="tab-milk" role="tab" aria-selected="false" aria-controls="pane-milk" data-tab="milk"><svg class="icon"><use href="#i-drop"/></svg>Молоко</button>
+        <button class="tab" id="tab-style" role="tab" aria-selected="false" aria-controls="pane-style" data-tab="style"><svg class="icon"><use href="#i-sliders"/></svg>Стиль</button>
+      </nav>
+      <div class="inspector-scroll" id="inspector-scroll">
+        <div class="summary-grid"><div class="summary-cell"><span>Объём <small data-count-label>одной груди</small></span><strong data-output="volume">—<small>л</small></strong></div><div class="summary-cell"><span>Масса <small data-count-label>одной груди</small></span><strong data-output="mass">—<small>кг</small></strong></div></div>
+        <section class="pane" id="pane-dimensions" role="tabpanel" aria-labelledby="tab-dimensions">
+          <div class="section-heading"><h2>Масштаб и линейки</h2><span class="step-badge">01</span></div><p class="section-description">Сначала измерьте известную длину, затем диаметр одной груди с разных сторон.</p>
+          <div class="reference-card"><div class="card-top"><span class="ruler-dot reference-dot"></span><h3>Эталон</h3><span class="mini-label">МАСШТАБ</span></div><div class="input-pair"><label class="sr-only" for="reference">Известная длина</label><input id="reference" data-setting="reference" type="number" min="0.000001" max="1000000000000" step="any" value="170"><label class="sr-only" for="reference-unit">Единицы эталона</label><select id="reference-unit" data-setting="referenceUnit" data-options="length"></select></div><p>Например, рост персонажа — 170 см.</p></div>
+          <div class="ruler-list" id="ruler-list"></div>
+          <label class="field-label">Единицы измерения<select data-setting="lengthUnit" data-options="length" data-auto="true"></select></label>
+          <div class="field-label">Расчёт для<div class="segmented" id="count-segments"><button data-count="1" class="active">Одной груди</button><button data-count="2">Всего бюста</button><button data-count="custom">Своё число</button></div></div><label class="field-label" id="custom-count-label" hidden>Количество<input type="number" id="custom-count" min="1" max="1000" step="1" value="3"></label>
+          <div class="hint-card"><svg class="icon"><use href="#i-help"/></svg><p>Тяните за точки на концах линейки. <kbd>Shift</kbd> фиксирует угол, а за саму линию её можно переместить.</p></div>
+          <button class="button subtle full" id="reset-rulers"><svg class="icon"><use href="#i-reset"/></svg>Сбросить линейки</button>
+        </section>
+        <section class="pane" id="pane-volume" role="tabpanel" aria-labelledby="tab-volume" hidden>
+          <div class="section-heading"><h2>Объём и масса</h2><span class="step-badge">02</span></div><p class="section-description">Геометрическая оценка по размерам, заданным линейками.</p>
+          <label class="field-label">Модель<select data-setting="model"><option value="average">Средний диаметр · как в оригинале</option><option value="ellipsoid">Эллипсоид · три оси</option></select></label>
+          <div class="formula-box"><span>ФОРМУЛА ОБЪЁМА</span><code id="formula">V = π / 6 × d³</code><small id="model-description">d — среднее включённых диаметров.</small></div>
+          <label class="field-label">Плотность, г/см³<input data-setting="density" type="number" min="0.000001" max="1000000" step="0.001" value="0.945"></label><div class="field-row"><label class="field-label">Объём<select data-setting="volumeUnit" data-options="volume" data-auto="true"></select></label><label class="field-label">Масса<select data-setting="massUnit" data-options="mass" data-auto="true"></select></label></div>
+          <div class="divider"></div><h3 class="subheading">Если размер увеличивается</h3><div class="field-row"><label class="field-label">Прирост диаметра<input data-setting="growth" type="number" min="0" max="1000000000000" step="any" value="1"></label><label class="field-label">Единицы<select data-setting="growthUnit" data-options="length"></select></label></div><div class="field-row"><label class="field-label">За период<select data-setting="growthTime" data-options="time"></select></label><label class="field-label">Результат за<select data-setting="growthOutputTime" data-options="time"></select></label></div>
+          <div class="result-card"><span>Прирост массы за следующий период</span><strong data-output="growthMass">—</strong><small>С учётом выбранного количества.</small></div><p class="footnote">Изображение даёт приблизительные размеры: ракурс и перспектива влияют на результат. Формула в интерфейсе соответствует выбранной модели.</p>
+        </section>
+        <section class="pane" id="pane-clothing" role="tabpanel" aria-labelledby="tab-clothing" hidden>
+          <div class="section-heading"><h2>Расход ткани</h2><span class="step-badge">03</span></div><p class="section-description">Оценка дополнительной ткани для покрытия выбранного количества полусфер.</p>
+          <div class="result-card"><span>Площадь поверхности</span><strong data-output="surface">—</strong><small>Модель полусферы · 2πr² на одну грудь.</small></div>
+          <label class="field-label">Запас на раскрой, %<input data-setting="waste" type="number" min="0" max="10000" step="1" value="15"></label><label class="field-label">Цена ткани за м²<input data-setting="fabricPrice" type="number" min="0" max="1000000000" step="any" value="500"></label><label class="field-label">Валюта<select data-setting="currency"><option value="RUB">Рубли · ₽</option><option value="USD">Доллары · $</option><option value="EUR">Евро · €</option></select></label>
+          <div class="stat-line"><span>Ткани с запасом</span><strong data-output="fabric">—</strong></div><div class="stat-line"><span>Стоимость материала</span><strong data-output="fabricCost">—</strong></div><p class="footnote">Это только дополнительный материал. Основа одежды, швы, выкройка и работа в расчёт не входят. Размер бюстгальтера по этим линейкам не определяется.</p>
+        </section>
+        <section class="pane" id="pane-milk" role="tabpanel" aria-labelledby="tab-milk" hidden>
+          <div class="section-heading"><h2>Молочная модель</h2><span class="model-badge">УСЛОВНО</span></div><p class="section-description">Модель из оригинального калькулятора: заданный процент объёма за час.</p>
+          <label class="field-label">Производительность, % объёма в час<input data-setting="production" type="number" min="0" max="1000000" step="any" value="5"></label><label class="field-label">Период расчёта<select data-setting="milkTime" data-options="time"></select></label><div class="result-card"><span>Количество за период</span><strong data-output="milk">—</strong><small>Для выбранного количества груди.</small></div>
+          <div class="field-row"><label class="field-label">Условная цена за литр<input data-setting="milkPrice" type="number" min="0" max="1000000000" step="any" value="100"></label><label class="field-label">Валюта<select data-setting="currency"><option value="RUB">₽</option><option value="USD">$</option><option value="EUR">€</option></select></label></div><div class="stat-line"><span>Условная стоимость</span><strong data-output="milkValue">—</strong></div><div class="stat-line"><span>Энергия за период</span><strong data-output="milkCalories">—</strong></div><label class="field-label">Энергетический эквивалент<select data-setting="population" data-options="population"></select></label><div class="stat-line"><span>За сутки</span><strong data-output="population">—</strong></div>
+          <p class="footnote">Фантазийная модель, а не прогноз лактации. Коэффициент 5% взят из оригинала. Энергия: 676,281 ккал/л; сравнение: 2 400 ккал на взрослого в сутки. Цену вы задаёте сами; курсы валют не пересчитываются.</p>
+        </section>
+        <section class="pane" id="pane-style" role="tabpanel" aria-labelledby="tab-style" hidden>
+          <div class="section-heading"><h2>Оформление</h2><svg class="icon"><use href="#i-sliders"/></svg></div><p class="section-description">Цвета линеек, подписи и ваши заметки на изображении.</p>
+          <div class="switch-row"><label for="show-rulers">Показывать линейки</label><input id="show-rulers" data-setting="showRulers" type="checkbox" checked></div><div class="switch-row"><label for="show-labels">Подписи размеров</label><input id="show-labels" data-setting="showLabels" type="checkbox" checked></div><label class="field-label range-label">Толщина линий<output id="line-width-output">2,5</output><input data-setting="lineWidth" type="range" min="1" max="8" step="0.5" value="2.5"></label><label class="field-label range-label">Размер подписей<output id="font-size-output">2,6</output><input data-setting="fontSize" type="range" min="1" max="6" step="0.1" value="2.6"></label><label class="color-field">Цвет текста<input data-setting="textColor" type="color" value="#ffffff"></label>
+          <div class="switch-row"><label for="freeze">Зафиксировать результаты</label><input id="freeze" type="checkbox"></div><p class="footnote">Можно двигать линейки, сохранив текущие значения. После отключения расчёты обновятся.</p>
+          <div class="divider"></div><h3 class="subheading">Текст на изображении</h3><label class="field-label">Подпись<textarea id="annotation-text" rows="3" maxlength="500" placeholder="Ваша заметка…"></textarea></label><div class="field-row"><button class="button subtle" id="add-annotation">Добавить</button><button class="button subtle" id="update-annotation" disabled>Изменить</button></div><div id="annotation-list" class="annotation-list"></div><p class="footnote">Текст можно перетаскивать по холсту. Выберите подпись в списке, чтобы изменить её.</p>
+        </section>
+      </div>
+      <div class="inspector-foot"><span class="status-dot"></span><span id="inspector-status">Готов к вашему изображению</span><button class="icon-button" id="about-open" aria-label="О проекте" title="О проекте"><svg class="icon"><use href="#i-help"/></svg></button></div>
+    </aside>
+  </main>
+  <input id="image-input" type="file" accept="image/png,image/jpeg,image/webp,image/gif,image/avif,image/bmp" hidden>
+  <input id="project-input" type="file" accept=".json,.tittyscale,application/json" hidden>
+  <dialog id="help-dialog" class="modal"><div class="modal-heading"><span class="eyebrow">БЫСТРЫЙ СТАРТ</span><button class="icon-button" data-close aria-label="Закрыть"><svg class="icon"><use href="#i-x"/></svg></button></div><h2>Четыре шага к результату</h2><ol class="guide-steps"><li><strong>Добавьте изображение</strong><p>Выберите файл, перетащите его на холст или вставьте из буфера обмена.</p></li><li><strong>Задайте масштаб</strong><p>Растяните светлую линейку на известную длину, например рост, и укажите значение справа.</p></li><li><strong>Измерьте одну грудь</strong><p>Разместите A, B и C поперёк неё с разных сторон. Ненужные линейки можно отключить. Выбор «Всего бюста» удвоит результат.</p></li><li><strong>Сохраните результат</strong><p>Экспортируйте PNG с линейками и сводкой или сохраните проект для дальнейшей работы.</p></li></ol><div class="shortcut-list"><span>Ровный угол <kbd>Shift</kbd></span><span>Масштаб <kbd>Колёсико</kbd></span><span>Панорама <kbd>Пробел + мышь</kbd></span><span>Отмена <kbd>Ctrl + Z</kbd></span><span>Вписать <kbd>0</kbd></span><span>Точный сдвиг <kbd>← ↑ ↓ →</kbd></span></div></dialog>
+  <dialog id="url-dialog" class="modal compact"><div class="modal-heading"><span class="eyebrow">ДОБАВИТЬ ИЗОБРАЖЕНИЕ</span><button class="icon-button" data-close aria-label="Закрыть"><svg class="icon"><use href="#i-x"/></svg></button></div><h2>Изображение по ссылке</h2><form id="url-form"><label class="field-label">Прямая ссылка на изображение<input id="image-url" type="url" placeholder="https://example.com/image.png" required></label><p class="footnote">Сервер изображения должен разрешать загрузку с других сайтов (CORS). Если ссылка не работает, скачайте файл и загрузите его сюда.</p><button class="button primary full" id="url-submit">Загрузить</button></form></dialog>
+  <dialog id="export-dialog" class="modal"><div class="modal-heading"><span class="eyebrow">ГОТОВО К СОХРАНЕНИЮ</span><button class="icon-button" data-close aria-label="Закрыть"><svg class="icon"><use href="#i-x"/></svg></button></div><h2>Экспорт изображения</h2><div class="export-preview"><img id="export-preview" alt="Предпросмотр изображения с измерениями"></div><div class="switch-row"><label for="export-stats">Добавить сводку расчётов</label><input id="export-stats" data-setting="exportStats" type="checkbox" checked></div><label class="field-label">Разрешение<select data-setting="exportScale"><option value="1">Исходное · 1×</option><option value="2">Увеличенное · 2×</option></select></label><div class="field-row"><button id="download-png" class="button primary"><svg class="icon"><use href="#i-download"/></svg>Скачать PNG</button><button id="copy-png" class="button subtle">В буфер обмена</button></div><p class="footnote" id="export-size"></p></dialog>
+  <dialog id="about-dialog" class="modal compact"><div class="modal-heading"><span class="eyebrow">О ПРОЕКТЕ</span><button class="icon-button" data-close aria-label="Закрыть"><svg class="icon"><use href="#i-x"/></svg></button></div><h2>TittyScale RU</h2><p>Самостоятельная русская реализация идеи <a href="https://roannethewolf.github.io/TittyScaling/" target="_blank" rel="noopener noreferrer">TittyScaling от RoanneTheWolf</a>. Исходный код и иллюстрации автора не используются.</p><p>Расчёты основаны на упрощённой геометрии. Изображения обрабатываются локально. Проект не отправляет их на сервер и не содержит аналитики.</p><a class="button subtle" href="https://github.com/pzdrzk/tittyscaling-ru" target="_blank" rel="noopener noreferrer">Код проекта на GitHub<svg class="icon"><use href="#i-arrow"/></svg></a></dialog>
+  <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+  <script type="module" src="./src/app.mjs"></script>
+</body>
+</html>

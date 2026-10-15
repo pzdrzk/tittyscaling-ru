@@ -1,0 +1,9 @@
+{
+  "name": "tittyscaling-ru",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Русская студия измерений по изображениям",
+  "scripts": { "test": "node --test tests/*.test.mjs", "check": "node --check src/app.mjs && node --check src/math.mjs && node --check src/state.mjs && node --check src/render.mjs" },
+  "engines": { "node": ">=20" }
+}

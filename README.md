@@ -1,5 +1,9 @@
 # TittyScale RU
 
+[Открыть сайт](https://pzdrzk.github.io/tittyscaling-ru/)
+
+![Интерфейс TittyScale RU](docs/preview.jpg)
+
 Русская студия измерений по изображениям. Статический сайт для GitHub Pages: без сервера, сборки, регистрации, внешних библиотек и аналитики.
 
 ## Возможности

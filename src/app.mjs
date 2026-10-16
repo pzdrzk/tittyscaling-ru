@@ -10,6 +10,7 @@ const catalogs = { length: LENGTH, volume: VOLUME, mass: MASS, time: TIME, popul
 let state = createState(), image = null, view = { zoom: 1, panX: 0, panY: 0, scale: 1, x: 0, y: 0 };
 let hitBoxes = { labels: [], annotations: [] }, drag = null, spacePressed = false;
 let toastTimer, exportCanvas = null, projectLoad = 0, settingBefore = null;
+let clipboardLoading = false;
 const undoStack = [], redoStack = [];
 
 function notify(message, error = false) {
@@ -71,6 +72,42 @@ async function openImageFile(file) {
   if (!/^image\/(png|jpeg|webp|gif|avif|bmp)$/i.test(file.type) && !/\.(png|jpe?g|webp|gif|avif|bmp)$/i.test(file.name)) return notify('Выберите PNG, JPG, WebP, GIF, AVIF или BMP.', true);
   if (file.size > 20 * 1024 * 1024) return notify('Файл больше 20 МБ. Уменьшите его перед загрузкой.', true);
   try { await addImage(await fileToDataURL(file), file.name || 'Изображение'); } catch (e) { notify(e.message, true); }
+}
+
+async function pasteImageFromClipboard() {
+  if (clipboardLoading) return;
+  const shortcut = /Mac|iPhone|iPad|iPod/.test(navigator.platform || navigator.userAgent) ? '⌘+V' : 'Ctrl+V';
+  if (!navigator.clipboard?.read) return notify(`Браузер не поддерживает кнопку вставки. Скопируйте изображение и нажмите ${shortcut} на странице.`, true);
+  clipboardLoading = true;
+  const buttons = $$('[data-paste-image]');
+  buttons.forEach(button => { button.disabled = true; button.setAttribute('aria-busy', 'true'); });
+  try {
+    // Read directly from the click so Safari and Chromium retain user activation.
+    const items = await navigator.clipboard.read();
+    for (const item of items) {
+      const types = [...item.types].filter(type => /^image\/(png|jpeg|webp|gif|avif|bmp)$/i.test(type));
+      types.sort((a, b) => Number(b === 'image/png') - Number(a === 'image/png'));
+      for (const type of types) {
+        let blob;
+        try { blob = await item.getType(type); } catch (error) {
+          if (error.name === 'NotFoundError') continue;
+          throw error;
+        }
+        if (!blob.size) continue;
+        const extension = type === 'image/jpeg' ? 'jpg' : type.split('/')[1];
+        await openImageFile(new File([blob], `Из буфера обмена.${extension}`, { type }));
+        return;
+      }
+    }
+    notify('В буфере нет изображения. Скопируйте саму картинку или сделайте снимок экрана, затем попробуйте ещё раз.', true);
+  } catch (error) {
+    notify(error.name === 'NotAllowedError' || error.name === 'SecurityError'
+      ? `Браузер не разрешил доступ к буферу. Разрешите чтение или вставьте изображение через ${shortcut} на странице.`
+      : `Не удалось прочитать изображение из буфера. Попробуйте ${shortcut} или загрузку файла.`, true);
+  } finally {
+    clipboardLoading = false;
+    buttons.forEach(button => { button.disabled = false; button.removeAttribute('aria-busy'); });
+  }
 }
 
 function buildRulers() {
@@ -323,6 +360,7 @@ $('#annotation-list').addEventListener('click', e => {
 });
 
 for (const id of ['upload-main', 'replace-image']) $(`#${id}`).addEventListener('click', () => imageInput.click());
+$$('[data-paste-image]').forEach(button => button.addEventListener('click', pasteImageFromClipboard));
 imageInput.addEventListener('change', async () => { await openImageFile(imageInput.files[0]); imageInput.value = ''; });
 $('#demo').addEventListener('click', () => addImage(new URL('../assets/demo.svg', import.meta.url).href, 'Геометрический пример.png'));
 $('#url-open').addEventListener('click', () => $('#url-dialog').showModal());
@@ -340,7 +378,8 @@ area.addEventListener('dragleave', () => { if (--dragDepth <= 0) { dragDepth = 0
 area.addEventListener('drop', e => { e.preventDefault(); dragDepth = 0; $('#drop-overlay').hidden = true; openImageFile(e.dataTransfer.files[0]); });
 document.addEventListener('paste', e => {
   if (e.target.closest('input,textarea,[contenteditable="true"]')) return;
-  const file = [...(e.clipboardData?.items || [])].find(item => item.type.startsWith('image/'))?.getAsFile();
+  const file = [...(e.clipboardData?.items || [])].filter(item => item.type.startsWith('image/')).map(item => item.getAsFile()).find(Boolean)
+    || [...(e.clipboardData?.files || [])].find(item => item.type.startsWith('image/'));
   if (file) { e.preventDefault(); openImageFile(file); }
 });
 $('#fit').addEventListener('click', fit); $('#zoom-in').addEventListener('click', () => zoom(1.25)); $('#zoom-out').addEventListener('click', () => zoom(.8));
